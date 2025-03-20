@@ -24,7 +24,7 @@ class Trainer:
             self.criterion = nn.SmoothL1Loss()  # Regression
 
         # Create optimizer exactly as in the PyTorch tutorial
-        self.optimizer = optim.SGD(self.model.parameters(), lr=0.01)
+        self.optimizer = optim.SGD(self.model.parameters(), lr=0.005)
 
     def train_model(self, data_reader) -> None:
         """
