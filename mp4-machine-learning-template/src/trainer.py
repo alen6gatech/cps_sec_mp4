@@ -21,7 +21,7 @@ class Trainer:
         # Define loss function based on output layer size
         self.criterion = nn.BCEWithLogitsLoss()
         # Define Adam optimizer with default learning rate
-        self.optimizer = optim.Adam(self.model.parameters(), lr=0.005)
+        self.optimizer = optim.Adam(self.model.parameters(), lr=0.01)
 
         # Learning Rate Decay (StepLR)
         self.scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=30, gamma=0.5)  
