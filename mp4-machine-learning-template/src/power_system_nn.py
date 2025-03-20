@@ -24,7 +24,7 @@ class PowerSystemNN(nn.Module):
         self.fc3 = nn.Linear(84, output_dim)  
 
         # Activation function & dropout
-        self.relu = nn.ReLU()
+        self.relu = nn.Tanh()
         self.dropout = nn.Dropout(0.2)  # Dropout for regularization
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
