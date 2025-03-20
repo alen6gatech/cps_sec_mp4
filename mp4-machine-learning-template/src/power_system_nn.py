@@ -16,16 +16,16 @@ class PowerSystemNN(nn.Module):
         """
         super(PowerSystemNN, self).__init__()
 
-        # Fully connected layers
-        self.fc1 = nn.Linear(input_dim, 120)
-        self.bn1 = nn.BatchNorm1d(120)  # Batch normalization for stability
-        self.fc2 = nn.Linear(120, 84)
+       # Fully connected layers
+        self.fc1 = nn.Linear(input_dim, 150)
+        self.bn1 = nn.BatchNorm1d(150)  # Batch normalization for stability
+        self.fc2 = nn.Linear(150, 84)
         self.bn2 = nn.BatchNorm1d(84)  # Batch normalization for stability
-        self.fc3 = nn.Linear(84, output_dim)  # Output layer
+        self.fc3 = nn.Linear(84, output_dim)  
 
         # Activation function & dropout
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.2)  # Dropout for regularization
+        self.dropout = nn.Dropout(0.3)  # Dropout for regularization
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -40,5 +40,6 @@ class PowerSystemNN(nn.Module):
         x = self.relu(self.bn1(self.fc1(x)))  # Fully connected -> BatchNorm -> ReLU
         x = self.dropout(x)  # Apply dropout
         x = self.relu(self.bn2(self.fc2(x)))  # Fully connected -> BatchNorm -> ReLU
+        x = self.dropout(x)  # Apply dropout again
         x = self.fc3(x)  # Output layer (no activation)
         return x
