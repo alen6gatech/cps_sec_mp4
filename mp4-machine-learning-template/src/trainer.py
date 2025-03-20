@@ -24,7 +24,7 @@ class Trainer:
         self.optimizer = optim.Adam(self.model.parameters(), lr=0.01)
 
         # Learning Rate Decay (StepLR)
-        self.scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=30, gamma=0.5)  
+        self.scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=20, gamma=0.5)  
 
     def train_model(self, data_reader) -> None:
         """
@@ -39,9 +39,9 @@ class Trainer:
         
         # Create DataLoader for mini-batch processing
         train_dataset = TensorDataset(data_reader.X_tensor, data_reader.y_tensor)   # From template
-        train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)   # From template, increased batch size
-
-        epochs: int = 100  # Define the number of epochs to train the model for # From template
+        train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)   # From template
+        
+        epochs: int = 70  # Define the number of epochs to train the model for # From template
         
         # Training loop
         for epoch in range(epochs):

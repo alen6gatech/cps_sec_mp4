@@ -25,7 +25,7 @@ class PowerSystemNN(nn.Module):
 
         # Activation function & dropout
         self.relu = nn.ReLU()
-        self.dropout = nn.Dropout(0.1)  # Dropout for regularization
+        self.dropout = nn.Dropout(0.2)  # Dropout for regularization
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
@@ -40,6 +40,5 @@ class PowerSystemNN(nn.Module):
         x = self.relu(self.bn1(self.fc1(x)))  # Fully connected -> BatchNorm -> ReLU
         x = self.dropout(x)  # Apply dropout
         x = self.relu(self.bn2(self.fc2(x)))  # Fully connected -> BatchNorm -> ReLU
-        x = self.dropout(x)  # Apply dropout again
         x = self.fc3(x)  # Output layer (no activation)
         return x
