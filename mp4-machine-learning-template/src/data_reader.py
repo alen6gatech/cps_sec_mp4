@@ -127,7 +127,25 @@ class DataReader:
             selected_columns (list): The list of selected feature column names that are most important for the model
         """
         # Please only complete or modify this method, i.e., _find_important_features method. Do not alter any other class methods or features in this file.
-        selected_columns = []  # COMPLETE HERE
+        
+        # Identify columns with constant values (all the same)
+        constant_columns = df_feature.nunique() == 1  # True for constant columns
+
+        # Compute standard deviation for each column (excluding constant columns)
+        std_devs = df_feature.loc[:, ~constant_columns].std()
+
+        # Identify columns with the highest and lowest standard deviations
+        highest_std_column = std_devs.idxmax()
+        lowest_std_column = std_devs.idxmin()
+
+        # Drop constant columns
+        df_train_features_filtered = df_feature.loc[:, ~constant_columns]
+
+        # Drop highest & lowest std dev columns (after removing constant ones)
+        df_train_features_filtered = df_train_features_filtered.drop(columns=[highest_std_column, lowest_std_column])
+
+
+        selected_columns = df_train_features_filtered.columns.tolist()  # COMPLETE HERE
         return selected_columns
 
     def _reduce_feature_space(self) -> None:

@@ -4,47 +4,41 @@ import torch
 class PowerSystemNN(nn.Module):
     """
     Neural network model for electric power system branch overload prediction.
-
-    Define your neural network architecture here. You should consider how many layers to include,
-    the size of each layer, and the activation functions you will use.
     """
-    
+
     def __init__(self, input_dim: int, output_dim: int) -> None:
         """
-        Initialize your neural network model.
-        
+        Initialize the neural network model.
+
         Parameters:
-            input_dim (int): The dimensionality of the input data.
-            output_dim (int): The dimensionality of the output data.
+            input_dim (int): The number of input features.
+            output_dim (int): The number of output classes.
         """
         super(PowerSystemNN, self).__init__()
-        # Define your neural network architecture here
-        # Example:
-        # self.fc1 = nn.Linear(input_dim, <number_of_neurons>) # First fully connected layer
-        # Add more layers...
-        # self.output_layer = nn.Linear(<number_of_neurons_in_the_last_hidden_layer>, output_dim) # Output layer
-        
-        # Define activation functions
-        # Example:
-        # self.relu = nn.ReLU()
-        # self.sigmoid = nn.Sigmoid()
-        
+
+        # Fully connected layers
+        self.fc1 = nn.Linear(input_dim, 120)
+        self.bn1 = nn.BatchNorm1d(120)  # Batch normalization for stability
+        self.fc2 = nn.Linear(120, 84)
+        self.bn2 = nn.BatchNorm1d(84)  # Batch normalization for stability
+        self.fc3 = nn.Linear(84, output_dim)  # Output layer
+
+        # Activation function & dropout
+        self.relu = nn.ReLU()
+        self.dropout = nn.Dropout(0.2)  # Dropout for regularization
+
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
-        Implement the forward pass of the model.
-        
-        Here, you should apply the layers and activation functions you defined in __init__ to the input tensor.
-        
+        Defines the forward pass of the model.
+
         Parameters:
             x (Tensor): The input tensor to the neural network.
-        
+
         Returns:
             Tensor: The output of the network.
         """
-        # Implement the forward pass using the layers and activation functions
-        # Example:
-        # x = self.relu(self.fc1(x))
-        # x = self.sigmoid(self.output_layer(x))
-        # return x
-
-        # Remember to return the final output
+        x = self.relu(self.bn1(self.fc1(x)))  # Fully connected -> BatchNorm -> ReLU
+        x = self.dropout(x)  # Apply dropout
+        x = self.relu(self.bn2(self.fc2(x)))  # Fully connected -> BatchNorm -> ReLU
+        x = self.fc3(x)  # Output layer (no activation)
+        return x

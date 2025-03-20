@@ -10,39 +10,39 @@ class Trainer:
     """
     def __init__(self, model: nn.Module) -> None:
         """
-        Initializes the Trainer with a model and an optional learning rate.
+        Initializes the Trainer with a model.
         
         Parameters:
             model (nn.Module): The neural network model to be trained.
         """
         self.model = model
-        # Define the loss function. 
-        self.criterion = None  # Define the appropriate loss function
-        # Define the optimizer.
-        self.optimizer = None  # Initialize the optimizer with model parameters and learning rate
+        
+        # Define loss function based on output layer size
+        if model.fc3.out_features == 1:
+            self.criterion = nn.BCEWithLogitsLoss()  # Binary Classification
+        else:
+            self.criterion = nn.SmoothL1Loss()  # Regression
 
-    def train_model(self, data_reader: DataReader) -> None:
+        # Create optimizer exactly as in the PyTorch tutorial
+        self.optimizer = optim.SGD(self.model.parameters(), lr=0.01)
+
+    def train_model(self, data_reader) -> None:
         """
         Trains the model on data provided by the DataReader instance.
-        
+
         Parameters:
             data_reader: An instance of DataReader containing the training data and labels.
-        Returns:
-            None
         """
+        
         # Create DataLoader for mini-batch processing
-        # Example: train_dataset = TensorDataset(data_reader.X_tensor, data_reader.y_tensor)
-        # Example: train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
-    
-        epochs: int = None # Defien the number of epochs to train the model for
-    
+        train_dataset = TensorDataset(data_reader.X_tensor, data_reader.y_tensor)
+        train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
+
         # Training loop
-        for epoch in range(epochs):
-            # Iterate over batches of data
-            for batch_idx, (data, target) in enumerate(train_loader):  # Use your DataLoader here
-                pass
-                # Reset gradients via zero_grad()
-                # Forward pass
-                # Compute loss
-                # Backward pass and optimize via backward() and optimizer.step()
-            # You can print the loss here to see how it decreases
+        for data, target in train_loader:
+            self.optimizer.zero_grad()  # Zero the gradient buffers
+            output = self.model(data)   # Forward pass
+            loss = self.criterion(output, target)  # Compute loss
+            loss.backward()  # Backward pass
+            self.optimizer.step()  # Update weights
+            print(f"Loss: {loss.item()}")
