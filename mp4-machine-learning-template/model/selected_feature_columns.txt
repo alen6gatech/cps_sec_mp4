@@ -36,8 +36,6 @@ Qd_bus28
 Pd_bus29
 Qd_bus29
 Pd_bus31
-Qd_bus31
-Pd_bus39
 Qd_bus39
 Qg_gen1
 Qg_gen2

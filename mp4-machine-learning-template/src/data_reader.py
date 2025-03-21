@@ -128,24 +128,30 @@ class DataReader:
         """
         # Please only complete or modify this method, i.e., _find_important_features method. Do not alter any other class methods or features in this file.
         
-        # Identify columns with constant values (all the same)
+        ## Identify columns with constant values (all the same)
         constant_columns = df_feature.nunique() == 1  # True for constant columns
 
-        # Compute standard deviation for each column (excluding constant columns)
-        std_devs = df_feature.loc[:, ~constant_columns].std()
+        # Remove constant columns before computing standard deviations
+        df_non_constant = df_feature.loc[:, ~constant_columns]
 
-        # Identify columns with the highest and lowest standard deviations
-        highest_std_column = std_devs.idxmax()
-        lowest_std_column = std_devs.idxmin()
+        # Compute standard deviation for each column
+        std_devs = df_non_constant.std()
 
-        # Drop constant columns
+        # Get the top 2 highest and bottom 2 lowest standard deviation columns
+        highest_std_columns = std_devs.nlargest(2).index.tolist()  # Get 2 highest std dev columns
+        lowest_std_columns = std_devs.nsmallest(2).index.tolist()  # Get 2 lowest std dev columns
+
+        # Combine all columns to drop
+        columns_to_drop = highest_std_columns + lowest_std_columns
+
+        # Remove constant columns first
         df_train_features_filtered = df_feature.loc[:, ~constant_columns]
 
         # Drop highest & lowest std dev columns (after removing constant ones)
-        df_train_features_filtered = df_train_features_filtered.drop(columns=[highest_std_column, lowest_std_column])
+        df_train_features_filtered = df_train_features_filtered.drop(columns=columns_to_drop)
 
-
-        selected_columns = df_train_features_filtered.columns.tolist()  # COMPLETE HERE
+        # Get selected columns
+        selected_columns = df_train_features_filtered.columns.tolist()
         return selected_columns
 
     def _reduce_feature_space(self) -> None:
