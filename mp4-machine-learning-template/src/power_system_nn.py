@@ -37,8 +37,8 @@ class PowerSystemNN(nn.Module):
         Returns:
             Tensor: The output of the network.
         """
-        x = self.act(self.bn1(self.fc1(x)))  # Fully connected -> BatchNorm -> ReLU
+        x = self.act(self.bn1(self.fc1(x)))
         x = self.dropout(x)  # Apply dropout
-        x = self.act(self.bn2(self.fc2(x)))  # Fully connected -> BatchNorm -> ReLU
-        x = self.fc3(x)  # Output layer (no activation)
+        x = self.act(self.bn2(self.fc2(x)))
+        x = self.fc3(x)  # Output layer
         return x
