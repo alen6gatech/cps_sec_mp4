@@ -19,9 +19,9 @@ class PowerSystemNN(nn.Module):
        # Fully connected layers
         self.fc1 = nn.Linear(input_dim, 120)
         self.bn1 = nn.BatchNorm1d(120)  # Batch normalization for stability
-        self.fc2 = nn.Linear(120, 84)
-        self.bn2 = nn.BatchNorm1d(84)  # Batch normalization for stability
-        self.fc3 = nn.Linear(84, output_dim)  
+        self.fc2 = nn.Linear(120, 100)
+        self.bn2 = nn.BatchNorm1d(100)  # Batch normalization for stability
+        self.fc3 = nn.Linear(100, output_dim)  
 
         # Activation function & dropout
         self.act = nn.Tanh()
