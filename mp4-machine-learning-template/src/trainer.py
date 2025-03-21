@@ -18,8 +18,9 @@ class Trainer:
         
         self.model = model
         
-        # Define loss function based on output layer size
-        self.criterion = nn.BCEWithLogitsLoss()
+        # Define the loss function. # From template
+        self.criterion = nn.SmoothL1Loss()  # Define the appropriate loss function # From template
+            
         # Define Adam optimizer with default learning rate
         self.optimizer = optim.Adam(self.model.parameters(), lr=0.01)
 
