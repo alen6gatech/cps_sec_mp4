@@ -24,7 +24,7 @@ class PowerSystemNN(nn.Module):
         self.fc3 = nn.Linear(84, output_dim)  
 
         # Activation function & dropout
-        self.relu = nn.Tanh()
+        self.act = nn.Tanh()
         self.dropout = nn.Dropout(0.2)  # Dropout for regularization
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -37,8 +37,8 @@ class PowerSystemNN(nn.Module):
         Returns:
             Tensor: The output of the network.
         """
-        x = self.relu(self.bn1(self.fc1(x)))  # Fully connected -> BatchNorm -> ReLU
+        x = self.act(self.bn1(self.fc1(x)))  # Fully connected -> BatchNorm -> ReLU
         x = self.dropout(x)  # Apply dropout
-        x = self.relu(self.bn2(self.fc2(x)))  # Fully connected -> BatchNorm -> ReLU
+        x = self.act(self.bn2(self.fc2(x)))  # Fully connected -> BatchNorm -> ReLU
         x = self.fc3(x)  # Output layer (no activation)
         return x
