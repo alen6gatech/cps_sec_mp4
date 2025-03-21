@@ -21,7 +21,7 @@ class Trainer:
         self.criterion = nn.SmoothL1Loss()  # Define the appropriate loss function # From template
             
         # Define the optimizer. # From template
-        self.optimizer = optim.Adam(self.model.parameters(), lr=0.01) # Initialize the optimizer with model parameters and learning rate # From template
+        self.optimizer = optim.Adam(self.model.parameters(), lr=0.013) # Initialize the optimizer with model parameters and learning rate # From template
 
         # Learning Rate Decay (StepLR)
         self.scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=50, gamma=0.5)
