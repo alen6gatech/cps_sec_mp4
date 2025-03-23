@@ -4,24 +4,26 @@ from torch.utils.data import DataLoader, TensorDataset
 from data_reader import DataReader
 
 
-class Trainer:
+class Trainer: # Creates new class. From assignment template repository [1]. Last modified 07/01/2024.
     """
     Class responsible for training a neural network model.
     """
-    def __init__(self, model: nn.Module) -> None:
+    def __init__(self, model: nn.Module) -> None:   # Constructor for initializer method where "self" is an instance of Trainer,
+													# and "model" is expected to be model from torch.nn.Module. The contstructior
+													# has no output From assignment template repository [1]. Last modified 07/01/2024.
         """
         Initializes the Trainer with a model and an optional learning rate.
         
         Parameters:
             model (nn.Module): The neural network model to be trained.
         """
-        self.model = model
+        self.model = model # Set input "model" as input's "self" (Trainer instance's) model from torch.nn.Module. From assignment template repository [1]. Last modified 07/01/2024.
         
-        # Define the loss function. # From template
-        self.criterion = nn.SmoothL1Loss()  # Define the appropriate loss function # From template
+        # Define the loss function.
+        self.criterion = nn.SmoothL1Loss()  # Set input's "self" (Trainer instance's) loss function "criterion". From assignment template repository [1] and TODO [2]. Last modified 03/23/2025.
             
         # Define the optimizer. # From template
-        self.optimizer = optim.Adam(self.model.parameters(), lr=0.012) # Initialize the optimizer with model parameters and learning rate # From template
+        self.optimizer = optim.Adam(self.model.parameters(), lr=0.012) # Set input's "self" (Trainer instance's) "optimizer". From assignment template repository [1] and TODO [3]. Last modified 03/23/2025.
 
         # Learning Rate Decay (StepLR)
         self.scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=50, gamma=0.5)
@@ -69,3 +71,6 @@ class Trainer:
             # You can print the loss here to see how it decreases # From template
             # Print average loss for the epoch
             print(f"Epoch {epoch+1}/{epochs}, Loss: {epoch_loss / len(train_loader):.4f}")
+
+# References:
+# [1] Gholami, A., Shekari, T., "Intro to CPS Security - Mini Project 4", 2024. Available: https://github.com/tshekari3/cps_sec_mp4/tree/main

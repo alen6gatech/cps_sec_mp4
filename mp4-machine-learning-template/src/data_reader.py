@@ -152,13 +152,14 @@ class DataReader:
 
         # Get selected columns
         selected_columns = df_train_features_filtered.columns.to_list()
+        
         return selected_columns
 
-    def _reduce_feature_space(self) -> None:
+    def _reduce_feature_space(self) -> None: # Description below. From assignment template repository [10]. Last modified 07/01/2024.
         """
         Private method to reduce the feature space to only the selected important features.
         """
-        self.features_df = self.features_df[self.selected_feature_columns]
+        self.features_df = self.features_df[self.selected_feature_columns] # Select important columns from features_df. From assignment template repository [10]. Last modified 07/01/2024.
 
     def _set_feature_and_label_dim(self) -> None:
         """
@@ -178,3 +179,4 @@ class DataReader:
 # [3] Pandas Developers, "pandas.Index.to_list", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.Index.to_list.html
 
 
+# [10] Gholami, A., Shekari, T., "Intro to CPS Security - Mini Project 4", 2024. Available: https://github.com/tshekari3/cps_sec_mp4/tree/main
