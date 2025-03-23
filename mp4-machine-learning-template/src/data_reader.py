@@ -127,31 +127,31 @@ class DataReader:
             selected_columns (list): The list of selected feature column names that are most important for the model
         """
         # Please only complete or modify this method, i.e., _find_important_features method. Do not alter any other class methods or features in this file.
+
+        srs_constant_columns = df_feature.nunique() == 1  # Series of columns that have constant values. From pandas docs [1]. Last modified 03/23/2025.
         
-        ## Identify columns with constant values (all the same)
-        constant_columns = df_feature.nunique() == 1  # True for constant columns
+        df_non_constant = df_feature.loc[:, ~srs_constant_columns] # Pull only non-constant columns from data. From pandas docs [2]. Last modified 03/23/2025.
 
-        # Remove constant columns before computing standard deviations
-        df_non_constant = df_feature.loc[:, ~constant_columns]
+        srs_std_devs = df_non_constant.std() # Series of standard deviations for non constant columns. From pandas docs [3]. Last modified 03/23/2025.
 
-        # Compute standard deviation for each column
-        std_devs = df_non_constant.std()
-
-        # Get the top 2 highest and bottom 2 lowest standard deviation columns
-        highest_std_columns = std_devs.nlargest(2).index.tolist()  # Get 2 highest std dev columns
-        lowest_std_columns = std_devs.nsmallest(2).index.tolist()  # Get 2 lowest std dev columns
+        num_extremes = 2 # Number of extremes to remove. Last modified 03/23/2025.
+        std_devs_length = len(srs_std_devs) # Length of standard deviations series. From python docs [4]. Last modified 03/23/2025.
+        
+        if (std_devs_length >= ((num_extremes * 2) + 1)): # Check if there are enough columns to remove extremes. Last modified 03/23/2025.
+            lowest_std_columns = srs_std_devs.nsmallest(min(num_extremes, std_devs_length)).index.to_list()
+            highest_std_columns = srs_std_devs.nlargest(min(num_extremes, std_devs_length)).index.to_list()
+        else:
+            lowest_std_columns = []
+            highest_std_columns = []
 
         # Combine all columns to drop
         columns_to_drop = highest_std_columns + lowest_std_columns
 
-        # Remove constant columns first
-        df_train_features_filtered = df_feature.loc[:, ~constant_columns]
-
         # Drop highest & lowest std dev columns (after removing constant ones)
-        df_train_features_filtered = df_train_features_filtered.drop(columns=columns_to_drop)
+        df_train_features_filtered = df_non_constant.drop(columns=columns_to_drop)
 
         # Get selected columns
-        selected_columns = df_train_features_filtered.columns.tolist()
+        selected_columns = df_train_features_filtered.columns.to_list()
         return selected_columns
 
     def _reduce_feature_space(self) -> None:
@@ -166,3 +166,15 @@ class DataReader:
         """
         self.feature_dim = self.features_df.shape[1]
         self.label_dim = self.labels_df.shape[1]
+        
+# References:
+# [1] Pandas Developers, "pandas.DataFrame.nunique", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.DataFrame.nunique.html
+# [2] Pandas Developers, "pandas.DataFrame.loc", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.DataFrame.loc.html
+# [3] Pandas Developers, "pandas.DataFrame.std", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.DataFrame.std.html
+# [4] Python Developers, "len()", 2024. Available: https://docs.python.org/3.12/library/functions.html#len
+
+
+# [2] Pandas Developers, "pandas.DataFrame.columns", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.DataFrame.columns.html
+# [3] Pandas Developers, "pandas.Index.to_list", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.Index.to_list.html
+
+
