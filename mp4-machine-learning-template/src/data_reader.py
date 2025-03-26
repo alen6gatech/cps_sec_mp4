@@ -138,28 +138,25 @@ class DataReader:
         std_devs_length = len(srs_std_devs) # Length of standard deviations series. From python docs [4]. Last modified 03/23/2025.
         
         if (std_devs_length >= ((num_extremes * 2) + 1)): # Check if there are enough columns to remove extremes. Last modified 03/23/2025.
-            lowest_std_columns = srs_std_devs.nsmallest(min(num_extremes, std_devs_length)).index.to_list()
-            highest_std_columns = srs_std_devs.nlargest(min(num_extremes, std_devs_length)).index.to_list()
+            lowest_std_columns = srs_std_devs.nsmallest(min(num_extremes, std_devs_length)).index.to_list() # Find num_extremes lowest std dev columns. From python docs [5] and pandas docs [6]. Last modified 03/23/2025.
+            highest_std_columns = srs_std_devs.nlargest(min(num_extremes, std_devs_length)).index.to_list() # Find num_extremes highest std dev columns. From python docs [5] and pandas docs [6]. Last modified 03/23/2025.
         else:
-            lowest_std_columns = []
-            highest_std_columns = []
+            lowest_std_columns = [] # Set lowest std dev columns to empty list. Last modified 03/23/2025.
+            highest_std_columns = [] # Set highest std dev columns to empty list. Last modified 03/23/2025.
 
-        # Combine all columns to drop
-        columns_to_drop = highest_std_columns + lowest_std_columns
+        columns_to_drop = highest_std_columns + lowest_std_columns # Combine all columns to drop. Last modified 03/23/2025.
 
-        # Drop highest & lowest std dev columns (after removing constant ones)
-        df_train_features_filtered = df_non_constant.drop(columns=columns_to_drop)
+        df_train_features_filtered = df_non_constant.drop(columns=columns_to_drop)  # Drop lowest and highest std dev columns. From pandas docs [7]. Last modified 03/23/2025.
 
-        # Get selected columns
-        selected_columns = df_train_features_filtered.columns.to_list()
+        selected_columns = df_train_features_filtered.columns.to_list() # Get list of selected columns. From pandas docs [6] [8]. Last modified 03/23/2025.
         
         return selected_columns
 
-    def _reduce_feature_space(self) -> None: # Description below. From assignment template repository [10]. Last modified 07/01/2024.
+    def _reduce_feature_space(self) -> None:
         """
         Private method to reduce the feature space to only the selected important features.
         """
-        self.features_df = self.features_df[self.selected_feature_columns] # Select important columns from features_df. From assignment template repository [10]. Last modified 07/01/2024.
+        self.features_df = self.features_df[self.selected_feature_columns]
 
     def _set_feature_and_label_dim(self) -> None:
         """
@@ -173,10 +170,8 @@ class DataReader:
 # [2] Pandas Developers, "pandas.DataFrame.loc", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.DataFrame.loc.html
 # [3] Pandas Developers, "pandas.DataFrame.std", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.DataFrame.std.html
 # [4] Python Developers, "len()", 2024. Available: https://docs.python.org/3.12/library/functions.html#len
-
-
-# [2] Pandas Developers, "pandas.DataFrame.columns", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.DataFrame.columns.html
-# [3] Pandas Developers, "pandas.Index.to_list", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.Index.to_list.html
-
-
-# [10] Gholami, A., Shekari, T., "Intro to CPS Security - Mini Project 4", 2024. Available: https://github.com/tshekari3/cps_sec_mp4/tree/main
+# [5] Python Developers, "min()", 2024. Available: https://docs.python.org/3.12/library/functions.html#min
+# [6] Pandas Developers, "pandas.Index.to_list", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.Index.to_list.html
+# [7] Pandas Developers, "pandas.DataFrame.drop", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.DataFrame.drop.html
+# [8] Pandas Developers, "pandas.DataFrame.columns", 2024. Available: https://pandas.pydata.org/pandas-docs/version/2.2.2/reference/api/pandas.DataFrame.columns.htm
+# [9] Gholami, A., Shekari, T., "Intro to CPS Security - Mini Project 4", 2024. Available: https://github.com/tshekari3/cps_sec_mp4/tree/main
