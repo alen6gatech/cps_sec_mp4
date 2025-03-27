@@ -17,13 +17,13 @@ class Trainer: # Creates new class. From assignment template repository [1]. Las
         Parameters:
             model (nn.Module): The neural network model to be trained.
         """
-        self.model = model # Set input "model" as input's "self" (Trainer instance's) model from torch.nn.Module. From assignment template repository [1]. Last modified 07/01/2024.
+        self.model = model # Set input "model" as input's "self" (Trainer instance's) model from torch.nn.Module. From assignment template repository [1]. Last modified 03/23/2025.
         
         # Define the loss function.
-        self.criterion = nn.SmoothL1Loss()  # Set input's "self" (Trainer instance's) loss function "criterion". From assignment template repository [1] and TODO [2]. Last modified 03/23/2025.
+        self.criterion = nn.SmoothL1Loss()  # Set input's "self" (Trainer instance's) loss function "criterion". From assignment template repository [1], trial and error, and PyTorch documentation [2]. Last modified 03/23/2025.
             
-        # Define the optimizer. # From template
-        self.optimizer = optim.Adam(self.model.parameters(), lr=0.012) # Set input's "self" (Trainer instance's) "optimizer". From assignment template repository [1] and TODO [3]. Last modified 03/23/2025.
+        # Define the optimizer.
+        self.optimizer = optim.Adam(self.model.parameters(), lr=0.012) # Set input's "self" (Trainer instance's) "optimizer". From assignment template repository [1], trial and error, and PyTorch documentation [3]. Last modified 03/23/2025.
 
         # Learning Rate Decay (StepLR)
         self.scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=50, gamma=0.5)
@@ -74,3 +74,5 @@ class Trainer: # Creates new class. From assignment template repository [1]. Las
 
 # References:
 # [1] Gholami, A., Shekari, T., "Intro to CPS Security - Mini Project 4", 2024. Available: https://github.com/tshekari3/cps_sec_mp4/tree/main
+# [2] PyTorch Developers, "SmoothL1Loss", 2024. Available: https://pytorch.org/docs/stable/generated/torch.nn.SmoothL1Loss.html
+# [3] PyTorch Developers, "Adam", 2024. Available: https://pytorch.org/docs/stable/generated/torch.optim.Adam.html
