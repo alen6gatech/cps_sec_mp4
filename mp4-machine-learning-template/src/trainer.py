@@ -25,8 +25,8 @@ class Trainer: # Creates new class. From assignment template repository [1]. Las
         # Define the optimizer.
         self.optimizer = optim.Adam(self.model.parameters(), lr=0.012) # Set input's "self" (Trainer instance's) "optimizer". From assignment template repository [1], trial and error, and PyTorch documentation [3]. Last modified 03/23/2025.
 
-        # Learning Rate Decay (StepLR)
-        self.scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=50, gamma=0.5)
+        # Decay Learning Rate
+        self.scheduler = optim.lr_scheduler.StepLR(self.optimizer, step_size=50, gamma=0.5) # Gradually decrease learning rate for stable convergence. From example [4], PyTorch documentation [5], and tuned with trial and error.  Last modified 03/23/2025.
 
     def train_model(self, data_reader) -> None:
         """
@@ -38,41 +38,42 @@ class Trainer: # Creates new class. From assignment template repository [1]. Las
             None
         """
         # Create DataLoader for mini-batch processing # From template
-        train_dataset = TensorDataset(data_reader.X_tensor, data_reader.y_tensor)   # From template
-        train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True)   # From template, modified example
+        train_dataset = TensorDataset(data_reader.X_tensor, data_reader.y_tensor) # From assignment template repository [1]. Last modified 03/23/2025.
+        train_loader = DataLoader(train_dataset, batch_size=128, shuffle=True) # From assignment template repository [1], tuned by trial and error. Last modified 03/23/2025.
         
-        epochs: int = 350 # Define the number of epochs to train the model for # From template
+        epochs: int = 350 # From assignment template repository [1], tuned by trial and error. Last modified 03/23/2025.
         
-        # Training loop # From template
+        # Training loop
         for epoch in range(epochs):
             epoch_loss = 0.0  # Track epoch loss
             
             # Iterate over batches of data # From template
             for batch_idx, (data, target) in enumerate(train_loader):  # Use your DataLoader here # From template
-                # Reset gradients via zero_grad() # From template
-                self.optimizer.zero_grad()
+                # Reset gradients via zero_grad()
+                self.optimizer.zero_grad() # From assignment template repository [1]. Last modified 03/23/2025.
                 
-                # Forward pass # From template
-                output = self.model(data)
+                # Forward pass
+                output = self.model(data) # From assignment template repository [1] and PyTorch tutorial [5]. Last modified 03/23/2025.
 
                 # Compute loss # From template
-                loss = self.criterion(output, target)
+                loss = self.criterion(output, target) # From assignment template repository [1] and PyTorch tutorial [5]. Last modified 03/23/2025.
 
-                # Backward pass and optimize via backward() and optimizer.step() # From template
-                loss.backward()
-                self.optimizer.step()
-
+                # Backward pass and optimize via backward() and optimizer.step()
+                loss.backward() # From assignment template repository [1] and PyTorch tutorial [5]. Last modified 03/23/2025.
+                self.optimizer.step() # From assignment template repository [1] and PyTorch tutorial [5]. Last modified 03/23/2025.
+                
                 # Accumulate loss
-                epoch_loss += loss.item()
-
+                epoch_loss += loss.item() # From assignment template repository [1] and PyTorch tutorial [5]. Last modified 03/23/2025.
+                
             # Apply Learning Rate Decay
-            self.scheduler.step()
+            self.scheduler.step() # Gradually decrease learning rate for stable convergence. From example [4], PyTorch documentation [5], and tuned with trial and error.  Last modified 03/23/2025.
 
-            # You can print the loss here to see how it decreases # From template
-            # Print average loss for the epoch
-            print(f"Epoch {epoch+1}/{epochs}, Loss: {epoch_loss / len(train_loader):.4f}")
+            # Print epoch number and average loss for the epoch
+            print(f"Epoch: {epoch + 1}/{epochs}, Loss: {epoch_loss:.4f}") # From assignment template repository [1] and PyTorch tutorial [5]. Last modified 03/27/2025.
 
 # References:
 # [1] Gholami, A., Shekari, T., "Intro to CPS Security - Mini Project 4", 2024. Available: https://github.com/tshekari3/cps_sec_mp4/tree/main
 # [2] PyTorch Developers, "SmoothL1Loss", 2024. Available: https://pytorch.org/docs/stable/generated/torch.nn.SmoothL1Loss.html
 # [3] PyTorch Developers, "Adam", 2024. Available: https://pytorch.org/docs/stable/generated/torch.optim.Adam.html
+# [4] PyTorch Developers, "StepLR", 2024. Available: https://pytorch.org/docs/stable/generated/torch.optim.lr_scheduler.StepLR.html
+# [5] Chilamkurthy, S., "Transfer Learning for Computer Vision Tutorial", 2024. Available: https://pytorch.org/tutorials/beginner/transfer_learning_tutorial.html
